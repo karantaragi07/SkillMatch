@@ -48,27 +48,29 @@ mvn spring-boot:run
 mvn clean install
 java -jar target/skillmatch-0.0.1-SNAPSHOT.jar
 ```
+---
 
-📂 API Endpoints
+# 📂 API Endpoints
 Swagger UI:
 ➡️ http://localhost:8080/swagger-ui/index.html
 
-### Upload Resume & Extract Skills
+# Upload Resume & Extract Skills
 POST /api/resume/extract-skills
 
 - Upload a PDF file using form-data (key: file)
 
 - Returns detected skills from the resume
 
-### Match with Job Roles
+# Match with Job Roles
 POST /api/match
 
 - Upload a resume PDF
 
 - Returns best-matched job roles based on skill compatibility
 
+---
 
-🗃️ Project Structure
+# 🗃️ Project Structure
 
 SkillMatch
 │
@@ -79,13 +81,15 @@ SkillMatch
 ├── resources/static   → HTML frontend
 └── resources          → Application config (application.yml)
 
+---
 
-🧪 Testing the App
+# 🧪 Testing the App
 
 - Open your browser and go to: http://localhost:8080
 
 - Upload a PDF resume and get matched job roles
 
+---
 
 📌 Author
 Karan Taragi
