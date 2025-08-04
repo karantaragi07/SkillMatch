@@ -71,7 +71,7 @@ POST /api/match
 ---
 
 # 🗃️ Project Structure
-
+```text
 SkillMatch
 │
 ├── controller         → API controllers
@@ -80,7 +80,7 @@ SkillMatch
 ├── util               → Utility classes (e.g., PDF parsing)
 ├── resources/static   → HTML frontend
 └── resources          → Application config (application.yml)
-
+```
 ---
 
 # 🧪 Testing the App
@@ -93,3 +93,5 @@ SkillMatch
 
 📌 Author
 Karan Taragi
+📧 ksingh064002@gmail.com
+📍 Uttarakhand, India
