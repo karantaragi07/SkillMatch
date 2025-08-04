@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SkillMatch Resume Upload & Role Matching</title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <h1 class="mb-4 text-primary">SkillMatch Resume Upload & Role Matching</h1>
+
+    <div class="mb-3">
+        <input class="form-control" type="file" id="resumeFile" accept=".pdf" />
+    </div>
+
+    <button id="uploadBtn" class="btn btn-primary mb-4" onclick="uploadAndMatch()">
+        Upload & Match Roles
+    </button>
+
+    <div id="loading" class="text-secondary mb-3" style="display:none;">
+        Processing... Please wait.
+    </div>
+
+    <div id="results"></div>
+</div>
+
+<script>
+    async function uploadAndMatch() {
+      const fileInput = document.getElementById('resumeFile');
+      const results = document.getElementById('results');
+      const loading = document.getElementById('loading');
+      const uploadBtn = document.getElementById('uploadBtn');
+
+      results.innerHTML = '';
+      if (!fileInput.files.length) {
+        alert('Please select a PDF file first.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      try {
+        loading.style.display = 'block';
+        uploadBtn.disabled = true;
+
+        const response = await fetch('http://localhost:8080/api/resume/match-roles', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('Server error: ' + response.statusText);
+        }
+
+        const data = await response.json();
+
+        if (Object.keys(data).length === 0) {
+          results.innerHTML = '<div class="alert alert-warning">No matching roles found.</div>';
+          return;
+        }
+
+        // Build Bootstrap table
+        let tableHTML = `<table class="table table-striped table-hover">
+          <thead class="table-primary">
+            <tr>
+              <th>Job Role</th>
+              <th>Match Score (%)</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+        for (const [role, score] of Object.entries(data)) {
+          tableHTML += `<tr><td>${role}</td><td>${score.toFixed(2)}</td></tr>`;
+        }
+        tableHTML += '</tbody></table>';
+
+        results.innerHTML = tableHTML;
+
+      } catch (error) {
+        results.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+      } finally {
+        loading.style.display = 'none';
+        uploadBtn.disabled = false;
+      }
+    }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
